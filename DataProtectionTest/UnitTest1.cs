@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework.Internal;
+using System.Diagnostics.Metrics;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataProtectionTest
 {
@@ -42,6 +47,11 @@ namespace DataProtectionTest
             Assert.That(originalData==unprotectedData);
             //Assert.Pass();
         }
+        //This error occurs because of a data protection key mismatch in your ASP.NET Core application. The specific key 38b74422-5448-499b-bd2f-50aec444d317 cannot be found in the key ring.This typically happens in these scenarios:
+        //When deploying to multiple servers without sharing the data protection keys
+        //When the keys are stored in a temporary location and get deleted
+        //After redeploying the application with a new key
+
         [Test]
         public void ProtectUnprotect_DifferentKeyRing_ThrowsException()
         {
